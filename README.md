@@ -1,4 +1,5 @@
 ![logo](https://avatars1.githubusercontent.com/u/124156?v=3&s=100)
+![logo](http://ant.apache.org/images/ant_logo_large.gif)
 ==========================
 * [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
 
