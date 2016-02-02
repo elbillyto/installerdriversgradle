@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Invocar librerías nativas</title>
+</head>
+<body>
+<h2>Esta aplicación cliente JNLP invoca un Instalador</h2>
+<h3>Entre los recursos del instalador, existe un jar que contiene un bat.</h3>
+	<ul>
+		<li>Se puede usar DownloadService del API JNLP para extraerlo</li>
+		<li>Se puede guardar ese recurso extraído en un fichero temporal</li>
+		<li>Se ececuta ese .bat o .exe ( o cualquier ejecutable) </li>
+		<li><font size="16">Ese ejecutable se encargaría de instalar drivers y copiar ficheros a local de forma desatendida</font></li>
+	</ul>
+<h3><font size="12">Se puede usar DownloadService/DownloadService2 e ExtensionInstallerService... para copiar ficheros a ubicaciones locales </font></h3>
+<h2>Esta aplicación cliente JNLP instancia un bat e invoca métodos de una librería (DLL) nativa</h2>
+<h3>Para invocar la dll, usamos el elemento nativelib en el fichero .jnlp</h3>
+<h3>entre los recursos del programa, existe un jar que contiene un bat.</h3>
+	<ul>
+		<li>Se puede usar DownloadService del API JNLP para extraerlo </li>
+		<li>Se puede guardar ese recurso extraído en un fichero temporal</li>
+		<li>Se ececuta ese .bat o .exe ( o cualquier ejecutable) </li>
+		<li><font size="14">Ese ejecutable se encargaría de instalar drivers y copiar ficheros a local de forma desatendida</font></li>
+	</ul>
+<p>
+<font size="20"><a href="app/jdai_core_drivers.jnlp">Lanzar instalador webstart</a></font>
+<p>
+</body>
+</html>

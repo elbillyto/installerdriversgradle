@@ -1,0 +1,138 @@
+<?xml version="1.0"?>
+
+<project name="installerDrivers" default="main" basedir=".">
+
+	<!-- ***************************************************************** -->
+	<!-- Initialization needed for any target                              -->
+	<!-- ***************************************************************** -->
+
+	<target name="init">
+		<property name="jnlp.jar" value="./lib/jnlp.jar" />
+		<property name="servlet.jar" value="./lib/servlet.jar" />
+		<property name="jnlp-servlet.jar" value="./lib/jnlp-servlet.jar" />
+		<property name="xalan.jar" value="./lib/xalan.jar" />		
+		<property name="JDAI-TPV-LibExt.jar" value="./jars/JDAI-TPV-LibExt.jar" />
+		<property name="toolsIsban.jar" value="./jars/toolsIsban.jar" />
+		<property name="JXFSclient.jar" value="./jars/JXFSclient.jar" />
+		<property name="src.dir" value="src" />
+		<property name="src.lib.dir" value="src/lib" />
+		<property name="jars.lib.dir" value="src/jars" />
+		<property name="class.dir" value="bin" />
+		<property name="lib.dir" value="lib" />
+		<property name="war.dir" value="war/app" />
+		<property name="war.lib.dir" value="war/WEB-INF/lib" />
+		<property name="war.file.dir" value="war" />
+		<property name="classpath" value="${lib.dir}/jnlp.jar;${lib.dir}/jh.jar;${lib.dir}/servlet.jar" />
+	</target>
+
+
+	<!-- ***************************************************************** -->
+	<!-- Removes all generated files and directories                       -->
+	<!-- ***************************************************************** -->
+
+	<target name="clean" depends="init">
+		<delete dir="${class.dir}" />
+		<delete dir="${war.dir}" />
+	</target>
+
+
+	<!-- ***************************************************************** -->
+	<!-- Prepares any other class target by creating the expected          -->
+	<!-- directory structure.                                              -->
+	<!-- ***************************************************************** -->
+
+	<target name="prepare" depends="init">
+		<mkdir dir="${class.dir}" />
+		<mkdir dir="${class.dir}/proyectoJava" />
+		<mkdir dir="${class.dir}/instalador" />			
+		<mkdir dir="${lib.dir}" />
+		<mkdir dir="${war.lib.dir}" />
+		<copy file="${jnlp-servlet.jar}" tofile="${war.lib.dir}/jnlp-servlet.jar" overwrite="yes" />
+		<copy file="${xalan.jar}" tofile="${war.lib.dir}/xalan.jar" overwrite="yes" />
+		<copy file="${jnlp.jar}" tofile="${lib.dir}/jnlp.jar" overwrite="yes" />
+		<copy file="${servlet.jar}" tofile="${lib.dir}/servlet.jar" overwrite="yes" />
+		<copy file="${JDAI-TPV-LibExt.jar}" tofile="${war.dir}/JDAI-TPV-LibExt.jar" overwrite="yes" />
+		<copy file="${toolsIsban.jar}" tofile="${war.dir}/toolsIsban.jar" overwrite="yes" />
+		<copy file="${JXFSclient.jar}" tofile="${war.dir}/JXFSclient.jar" overwrite="yes" />		
+	</target>
+
+	<!-- ***************************************************************** -->
+	<!-- Compiles the classes                                              -->
+	<!-- ***************************************************************** -->
+
+	<target name="core-compile" depends="prepare">
+		<javac includeantruntime="false" srcdir="${src.dir}/proyectoJava" destdir="${class.dir}/proyectoJava" classpath="${classpath}" excludes="**/SCCS/*" />
+	</target>
+	<target name="installer-compile" depends="prepare">
+		<javac includeantruntime="false" srcdir="${src.dir}/instalador" destdir="${class.dir}/instalador" classpath="${classpath}" excludes="**/SCCS/*" />
+	</target>
+		
+	<target name="program-build-jar" depends="core-compile">
+		<jar jarfile="${war.dir}/jdai_core_drivers.jar" basedir="${class.dir}/proyectoJava" manifest="${src.dir}/proyectoJava/MANIFEST.MF" />
+	</target>
+
+	<target name="installer-build-jar" depends="installer-compile">
+		<jar jarfile="${war.dir}/Installer_native_ArqCli.jar" basedir="${class.dir}/instalador" manifest="${src.dir}/instalador/MANIFEST.MF" />
+	</target>
+	
+	<target name="nativelib-build-jar" depends="core-compile">
+		<jar jarfile="${war.dir}/corelib.jar" basedir="${src.lib.dir}/" />
+	</target>
+	
+	<target name="bat-build-jar">
+		<jar jarfile="${war.dir}/instala_Drivers.bat.jar" basedir="${src.dir}/" includes="instala_Drivers.bat"/>
+	</target>
+
+	
+	<!-- ***************************************************************** -->
+	<!-- firmar jars                                                       -->
+	<!-- ***************************************************************** -->
+	<target name="signjars" depends="program-build-jar,installer-build-jar,nativelib-build-jar,bat-build-jar">
+		<property name="build.output.dir" value="${war.dir}" />
+		<property name="build.classes.dir" value="${war.dir}" />
+		<property name="verisign.key.store" value="${build.output.dir}/.keystore" />
+		<property name="verisign.key.storepass" value="misban.com" />
+		<property name="verisign.key.alias" value="misban" />
+		<property name="verisign.key.pass" value="misban.com" />
+		<!--<mkdir dir="${build.output.dir}" />-->
+		<genkey alias="${verisign.key.alias}" verbose="true" storepass="${verisign.key.storepass}" keypass="${verisign.key.pass}" validity="365" keystore="${verisign.key.store}">
+			<dname>
+				<param name="CN" value="misban.com Group" />
+				<param name="OU" value="xIS07362" />
+				<param name="O" value="misban.com" />
+				<param name="C" value="ES" />
+			</dname>
+		</genkey>
+		<signjar jar="${build.classes.dir}/corelib.jar" signedjar="${build.output.dir}/corelib.jar" alias="${verisign.key.alias}" storepass="${verisign.key.storepass}" keystore="${verisign.key.store}" keypass="${verisign.key.pass}" />
+		<signjar jar="${build.classes.dir}/jdai_core_drivers.jar" signedjar="${build.output.dir}/jdai_core_drivers.jar" alias="${verisign.key.alias}" storepass="${verisign.key.storepass}" keystore="${verisign.key.store}" keypass="${verisign.key.pass}" />
+		<signjar jar="${build.classes.dir}/instala_Drivers.bat.jar" signedjar="${build.output.dir}/instala_Drivers.bat.jar" alias="${verisign.key.alias}" storepass="${verisign.key.storepass}" keystore="${verisign.key.store}" keypass="${verisign.key.pass}" />		
+		<signjar jar="${build.classes.dir}/Installer_native_ArqCli.jar" signedjar="${build.output.dir}/Installer_native_ArqCli.jar" alias="${verisign.key.alias}" storepass="${verisign.key.storepass}" keystore="${verisign.key.store}" keypass="${verisign.key.pass}" />
+		
+		<signjar jar="${build.classes.dir}/JDAI-TPV-LibExt.jar" signedjar="${build.output.dir}/JDAI-TPV-LibExt.jar" alias="${verisign.key.alias}" storepass="${verisign.key.storepass}" keystore="${verisign.key.store}" keypass="${verisign.key.pass}" />
+		<signjar jar="${build.classes.dir}/toolsIsban.jar" signedjar="${build.output.dir}/toolsIsban.jar" alias="${verisign.key.alias}" storepass="${verisign.key.storepass}" keystore="${verisign.key.store}" keypass="${verisign.key.pass}" />
+		<signjar jar="${build.classes.dir}/JXFSclient.jar" signedjar="${build.output.dir}/JXFSclient.jar" alias="${verisign.key.alias}" storepass="${verisign.key.storepass}" keystore="${verisign.key.store}" keypass="${verisign.key.pass}" />
+	</target>
+
+	<!-- ***************************************************************** -->
+	<!-- copiar jnlp                                                       -->
+	<!-- ***************************************************************** -->
+	<target name="copiar-jnlp">
+		<copy file="${src.dir}/jdai_core_drivers.jnlp" tofile="${war.dir}/jdai_core_drivers.jnlp" overwrite="yes" />
+	</target>
+	<target name="copiar-jnlp_installer">
+		<copy file="${src.dir}/Installer_native_ArqCli.jnlp" tofile="${war.dir}/Installer_native_ArqCli.jnlp" overwrite="yes" />
+	</target>	
+
+	<!-- ***************************************************************** -->
+	<!-- empaquetar war                                                    -->
+	<!-- ***************************************************************** -->
+	<target name="war-file" depends="program-build-jar,installer-build-jar,nativelib-build-jar,signjars,copiar-jnlp,copiar-jnlp_installer">
+		<jar jarfile="${basedir}/AppinstallerDrivers.war" basedir="${war.file.dir}" />
+	</target>
+
+	<target name="main" depends="clean, program-build-jar,installer-build-jar,nativelib-build-jar,bat-build-jar,signjars,copiar-jnlp,copiar-jnlp_installer,war-file" />
+
+
+</project>
+
+

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jnlp codebase="http://localhost:8080/installerDrivers/app" href="Installer_native_ArqCli.jnlp">
+	<information>
+		<title>Instalador ArqCliente</title>
+		<vendor>isbanes</vendor>
+		<offline/>
+	</information>
+	<update check="always" policy="prompt-update" />
+	<security>
+		<all-permissions/>
+	</security>
+		
+	<resources os="Windows" arch="x86">
+        <nativelib href="corelib.jar"  download="eager"/> 
+        <jar href="instala_Drivers.bat.jar"  download="eager"/>     
+    </resources>  	
+<!-- un resources diferenciado porque el código del instalador sería común entre plataformas win/linux/-->	
+	<resources>
+		<j2se version="1.7+" />		
+		<jar href='Installer_native_ArqCli.jar' main='true' />
+	</resources>	
+	<installer-desc main-class="instalador.Instalador" />
+</jnlp>

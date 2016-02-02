@@ -1,0 +1,6 @@
+Manifest-Version: 1.0
+Class-Path: .
+Application-Name: Instalador Arq Core
+Permissions: all-permissions
+Created-By: 1.7.0_67 (Oracle Corporation)
+Main-Class: instalador.Instalador

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<jnlp spec="1.0+" codebase="http://localhost:8080/installerDrivers/app" href="jdai_core_drivers.jnlp">
+	<information>
+		<title>Programa Arq Cliente </title>
+		<vendor>miisban</vendor>
+		<homepage href="http://localhost:8080/installerDrivers" />
+		<description>Testing Testing</description>
+	</information>
+	<update check="always" policy="prompt-update" />
+	<security>
+		<all-permissions/>
+	</security>
+	<resources>
+		<j2se version="1.7+" />		
+		<extension name="Native installer" 	href="Installer_native_ArqCli.jnlp"></extension>
+		<jar href="jdai_core_drivers.jar" main="true"/>
+	</resources>
+	<resources os="Windows" arch="x86">
+        <nativelib href="corelib.jar"  download="eager"/> 
+        <jar href="instala_Drivers.bat.jar"  download="eager"/>        
+    </resources>  
+	<resources os="Linux" arch="i386 x86">
+		<nativelib href="lib/corelib_linux.jar"/>
+        <jar href="instala_Drivers.bash.jar"  download="eager"/>       		
+	</resources>
+	<application-desc 	name="Arq Core" main-class="proyectoJava.Programa" />
+</jnlp>
