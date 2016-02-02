@@ -1,4 +1,4 @@
-![logo](https://avatars1.githubusercontent.com/u/124156?v=3&s=100) | ![logo](http://ant.apache.org/images/ant_logo_large.gif)
+![logo](https://avatars1.githubusercontent.com/u/124156?v=3&s=100) | ![logo](http://ant.apache.org/images/ant_logo_large.gif) | ![logo](http://www.icons101.com/icons/12/iOS_78_style_icons_for_Java_by_ChilliTrav/128/jnlp.png)
 ==========================
 * [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
 
