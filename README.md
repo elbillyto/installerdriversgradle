@@ -52,9 +52,9 @@ public class Programa{
 * Play aroung with gradle/groovy
 
 ## Installation
-* Needs Gradle
 * Clone repository
-* run gradle construyeWar
+* run ant build task
+	* parent gradle task imports Ant build task
 
 
 ## Tests
