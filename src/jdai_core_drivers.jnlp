@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?> 
-<jnlp spec="1.0+" codebase="http://localhost:8080/installerDrivers/app" href="jdai_core_drivers.jnlp">
+<jnlp spec="1.0+" codebase="http://localhost:8080/AppinstallerDrivers/app" href="jdai_core_drivers.jnlp">
 	<information>
 		<title>Programa Arq Cliente </title>
 		<vendor>miisban</vendor>
-		<homepage href="http://localhost:8080/installerDrivers" />
+		<homepage href="http://localhost:8080/AppinstallerDrivers" />
 		<description>Testing Testing</description>
 	</information>
 	<update check="always" policy="prompt-update" />
